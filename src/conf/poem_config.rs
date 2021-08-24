@@ -38,12 +38,12 @@ impl PoemConfig {
 		Err(ConfigError::NotFound)
 	}
 	
-	fn get_mut(&mut self, env: Environment) -> &mut BasicConfig {
-		match self.config.get_mut(&env) {
-			Some(config) => config,
-			None => panic!("set(): {} config is missing", env),
-		}
-	}
+	// fn get_mut(&mut self, env: Environment) -> &mut BasicConfig {
+	// 	match self.config.get_mut(&env) {
+	// 		Some(config) => config,
+	// 		None => panic!("set(): {} config is missing", env),
+	// 	}
+	// }
 	
 	pub fn active_default_from(filename: Option<&Path>) -> Result<PoemConfig> {
 		let mut defaults = HashMap::new();
@@ -57,7 +57,7 @@ impl PoemConfig {
 			defaults.insert(Production, BasicConfig::default(Production));
 		}
 		
-		let mut config = PoemConfig {
+		let config = PoemConfig {
 			active_env: Environment::active()?,
 			config: defaults,
 		};
@@ -80,10 +80,10 @@ impl PoemConfig {
 			Err(e) => return Err(ConfigError::ParseError(src, path, e.to_string(), e.line_col()))
 		};
 		
-		let mut config = PoemConfig::active_default_from(Some(filename.as_ref()))?;
+		let config = PoemConfig::active_default_from(Some(filename.as_ref()))?;
 		
 		for (entry, value) in table {
-			let kv_pairs = match value.as_table() {
+			match value.as_table() {
 				Some(table) => table,
 				None => return Err(ConfigError::BadType(
 					entry, "a table", value.type_str(), Some(path.clone())

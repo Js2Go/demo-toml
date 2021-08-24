@@ -14,9 +14,9 @@ pub enum Environment {
 }
 
 impl Environment {
-	pub(crate) const ALL: [Environment; 3] = [Development, Staging, Production];
+	// pub(crate) const ALL: [Environment; 3] = [Development, Staging, Production];
 	
-	pub(crate) const VALID: &'static str = "development, staging, production";
+	// pub(crate) const VALID: &'static str = "development, staging, production";
 	
 	pub fn active() -> Result<Environment, ConfigError> {
 		match env::var(CONFIG_ENV) {
